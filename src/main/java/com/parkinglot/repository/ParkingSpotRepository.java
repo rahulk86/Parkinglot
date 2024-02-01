@@ -1,10 +1,10 @@
 package com.parkinglot.repository;
 
-import com.parkinglot.modal.ParkingSpot;
+import com.parkinglot.modal.SpotDecorator;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-public interface ParkingSpotRepository extends JpaRepository<ParkingSpot,Long> {
-   Optional<ParkingSpot> findBySlotNumber(String slotNumber);
+public interface ParkingSpotRepository extends JpaRepository<SpotDecorator,Long> {
+   Optional<SpotDecorator> findBySlotNumber(String slotNumber);
 }

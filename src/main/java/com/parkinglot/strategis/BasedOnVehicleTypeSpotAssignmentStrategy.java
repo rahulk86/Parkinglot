@@ -12,32 +12,16 @@ import java.util.List;
 public class BasedOnVehicleTypeSpotAssignmentStrategy implements SpotAssignmentStrategy{
     @Autowired
     private ParkingLotRepository parkingLotRepository;
-    private ParkingSpot getParkingSpot(List<ParkingSpot> spots,VehicleType vehicleType){
+    private ParkingSpot getParkingSpot(SpotDecorator spots,VehicleType vehicleType){
         switch (vehicleType){
             case CAR -> {
-              return  spots
-                        .stream()
-                        .filter(spot->spot instanceof CarParkingSpot
-                                &&  spot.getStatus().equals(ParkingSpotStatus.AVAILABLE))
-                        .findFirst()
-                        .orElse(null);
-
+              return  spots.getParkingSpot(CarParkingSpot.class);
             }
             case BIKE -> {
-                return  spots
-                        .stream()
-                        .filter(spot->spot instanceof BikeParkingSpot
-                                &&  spot.getStatus().equals(ParkingSpotStatus.AVAILABLE))
-                        .findFirst()
-                        .orElse(null);
+                return  spots.getParkingSpot(BikeParkingSpot.class);
             }
             case BUS -> {
-                return  spots
-                        .stream()
-                        .filter(spot->spot instanceof BusParkingSpot
-                                &&  spot.getStatus().equals(ParkingSpotStatus.AVAILABLE))
-                        .findFirst()
-                        .orElse(null);
+                return  spots.getParkingSpot(BusParkingSpot.class);
             }
         }
         return null;
@@ -46,7 +30,7 @@ public class BasedOnVehicleTypeSpotAssignmentStrategy implements SpotAssignmentS
     public ParkingSpot getSpot(ParkingLot parkingLot,VehicleType vehicleType) {
         List<ParkingFloor> floors = parkingLot.getFloors();
         for(ParkingFloor floor:floors){
-            ParkingSpot spot = getParkingSpot(floor.getParkingSpotsList(), vehicleType);
+            ParkingSpot spot = getParkingSpot(floor.getSpotDecorator(), vehicleType);
             if(spot!=null){
                 return spot;
             }

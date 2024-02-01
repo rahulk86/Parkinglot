@@ -98,7 +98,7 @@ public class TicketService {
     }
 
     public void spotConfirmation(String ticketId,String spotId){
-        ParkingSpot spot = parkingSpotRepository
+        ParkingSpot spot = (ParkingSpot)parkingSpotRepository
                             .findBySlotNumber(spotId)
                             .orElseThrow(() -> new TicketException("Spot with ID " + spotId + " not found"));
         Ticket ticket = ticketRepository
